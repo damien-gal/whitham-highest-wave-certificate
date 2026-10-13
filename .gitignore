@@ -1,0 +1,7 @@
+build/
+__pycache__/
+artifacts/*.bin
+artifacts/.run.lock
+artifacts/*.tmp
+# Unlike the project-wide log ignore, proof logs are part of this release.
+!artifacts/*.log

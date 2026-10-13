@@ -1,0 +1,32 @@
+{
+  "id": "legacy-exact-decimals-v1",
+  "interpretation": "Every decimal string is an exact rational number, enclosed by Arb. Exponents are the inherited decimal rationals; since 2026-10-11 production TeX states the same convention (Section 5: the terminating decimals specify exact rational values). No coefficient optimization.",
+  "N0": 5,
+  "N1": 1,
+  "N2": 11,
+  "assignments": {
+    "p0": "0.61120159320355359",
+    "p1": "2.7624012994582795",
+    "a0k": "0.25",
+    "a0k+1": "-0.09186529326005956",
+    "a0k+2": "-0.004027567598029841",
+    "a0k+3": "0.002449055302062304",
+    "a0k+4": "0.005300258772850143",
+    "a0k+5": "0.0005045620668399171",
+    "a1k": "-0.015079514055110828",
+    "a1k+1": "-0.0015036862476077348",
+    "bi": "0.008560417336473005",
+    "bi+1": "0.0006326823377277547",
+    "bi+2": "0.00004973972422133443",
+    "bi+3": "4.886926723089561e-6",
+    "bi+4": "5.532358724209955e-7",
+    "bi+5": "5.719481296653965e-8",
+    "bi+6": "1.4354134439015963e-8",
+    "bi+7": "-9.97622130913055e-9",
+    "bi+8": "5.828491310021984e-9",
+    "bi+9": "-1.847883895374688e-8",
+    "bi+10": "-4.463362465423652e-8"
+  },
+  "source": "legacy/2026/Codes/Existence/basic_functions.c",
+  "source_sha256": "e5d66b363f9dee966e82eef2ed3bb2270238c1aa4ef56b18b02422bec726c42b"
+}

@@ -1,0 +1,167 @@
+{
+  "existence/methods.c": {
+    "source": "trusted/existence/src/methods.c",
+    "sha256": "b5b2e4a826f3dee9bb76b1f0154ba3202aaf5bac177263e29a2c0b2976ab4791",
+    "precision_only_change": false
+  },
+  "existence/constant_functions.c": {
+    "source": "trusted/existence/src/constant_functions.c",
+    "sha256": "298cad3d38800283748daa70194fc410c78725c29b23557e085e381ecd121873",
+    "precision_only_change": false
+  },
+  "existence/test_evaluators.c": {
+    "source": "trusted/existence/src/test_evaluators.c",
+    "sha256": "fdd8718a53da367036406ddf6aca46144073467f4539923107b82957ce432525",
+    "precision_only_change": true
+  },
+  "existence/complex_functions.h": {
+    "source": "trusted/existence/src/complex_functions.h",
+    "sha256": "3f75678448187114607579b2774628760f1cb03dbec1606416f91d977fb5e4b9",
+    "precision_only_change": false
+  },
+  "existence/verify.c": {
+    "source": "trusted/existence/src/verify.c",
+    "sha256": "ad408ad98577ab6752fe8df881dffc3cb4a6df4c1c13898329558e38a6946225",
+    "precision_only_change": true
+  },
+  "existence/basic_functions.h": {
+    "source": "trusted/existence/src/basic_functions.h",
+    "sha256": "c341c011d3e742b0da2fd5c2a091eb3d7b6f855203c438892ed9885bd9a53e9b",
+    "precision_only_change": false
+  },
+  "existence/methods.h": {
+    "source": "trusted/existence/src/methods.h",
+    "sha256": "6c8b19ccb9cac24cb4547448afe6398ac54569f51e3f7207a85eaf0e5a62b3e6",
+    "precision_only_change": false
+  },
+  "existence/constant_functions.h": {
+    "source": "trusted/existence/src/constant_functions.h",
+    "sha256": "0dea0f71918cfe3594119106d58dde69875da9af83e2d76d0ec4da7500fa961a",
+    "precision_only_change": false
+  },
+  "existence/norm.c": {
+    "source": "trusted/existence/src/norm.c",
+    "sha256": "3110e2c8022240592a1cfd46444df6b4dcd7109e1ddca6474ed72c7399d3706a",
+    "precision_only_change": true
+  },
+  "existence/scalars.c": {
+    "source": "trusted/existence/src/scalars.c",
+    "sha256": "d39a1ddd8d9d92d090dd03812e2b61964c8edab59fd3fe98b025f7cab9aca064",
+    "precision_only_change": true
+  },
+  "existence/clausen_cache.c": {
+    "source": "trusted/existence/src/clausen_cache.c",
+    "sha256": "1eea2122a41df5e4a7e31b934059ea3ab123fb4a7c73b6c59008b50320f4edd5",
+    "precision_only_change": false
+  },
+  "existence/basic_functions.c": {
+    "source": "trusted/existence/src/basic_functions.c",
+    "sha256": "758da6a91cb246eb13617f544e7ec766be501d4d59ccba4cb80daa1f6ce8dc7b",
+    "precision_only_change": false
+  },
+  "existence/complex_functions.c": {
+    "source": "trusted/existence/src/complex_functions.c",
+    "sha256": "c6570644d09c5769ecadaadca92abff44f96652cb3f9e63c959fa2a46bb2205d",
+    "precision_only_change": false
+  },
+  "convexity/methods.c": {
+    "source": "trusted/convexity/src/methods.c",
+    "sha256": "b5b2e4a826f3dee9bb76b1f0154ba3202aaf5bac177263e29a2c0b2976ab4791",
+    "precision_only_change": false
+  },
+  "convexity/derivative_profile.c": {
+    "source": "trusted/convexity/src/derivative_profile.c",
+    "sha256": "27bdf3598e9099a6dcb65aa6c823ac430d078b24d2ba900abc03109081e1b5be",
+    "precision_only_change": false
+  },
+  "convexity/constant_functions.c": {
+    "source": "trusted/convexity/src/constant_functions.c",
+    "sha256": "298cad3d38800283748daa70194fc410c78725c29b23557e085e381ecd121873",
+    "precision_only_change": false
+  },
+  "convexity/complex_functions.h": {
+    "source": "trusted/convexity/src/complex_functions.h",
+    "sha256": "3f75678448187114607579b2774628760f1cb03dbec1606416f91d977fb5e4b9",
+    "precision_only_change": false
+  },
+  "convexity/local_t2.c": {
+    "source": "trusted/convexity/src/local_t2.c",
+    "sha256": "a2465628384517ff69259f9f5bdf48142eba490487723058d6ebd77806319170",
+    "precision_only_change": true
+  },
+  "convexity/derivative_operators.c": {
+    "source": "trusted/convexity/src/derivative_operators.c",
+    "sha256": "0ebd9cebeb6d49641c8d54256c5f5773041bcc6e1f78771ae405acdcc3e54b7b",
+    "precision_only_change": true
+  },
+  "convexity/basic_functions.h": {
+    "source": "trusted/convexity/src/basic_functions.h",
+    "sha256": "c341c011d3e742b0da2fd5c2a091eb3d7b6f855203c438892ed9885bd9a53e9b",
+    "precision_only_change": false
+  },
+  "convexity/methods.h": {
+    "source": "trusted/convexity/src/methods.h",
+    "sha256": "6c8b19ccb9cac24cb4547448afe6398ac54569f51e3f7207a85eaf0e5a62b3e6",
+    "precision_only_change": false
+  },
+  "convexity/constant_functions.h": {
+    "source": "trusted/convexity/src/constant_functions.h",
+    "sha256": "0dea0f71918cfe3594119106d58dde69875da9af83e2d76d0ec4da7500fa961a",
+    "precision_only_change": false
+  },
+  "convexity/derivative_cusp.c": {
+    "source": "trusted/convexity/src/derivative_cusp.c",
+    "sha256": "f123a0fa0f6cf1c5cd7e1e06f355c2d26e1db6e748610482c57e29b819cbb51c",
+    "precision_only_change": true
+  },
+  "convexity/derivative_bounds.h": {
+    "source": "trusted/convexity/src/derivative_bounds.h",
+    "sha256": "4defa523cac767ab7ba97c714da4a342a00d5ca5e7d62712ee457ac1e36b1fca",
+    "precision_only_change": false
+  },
+  "convexity/clausen_cache.c": {
+    "source": "trusted/convexity/src/clausen_cache.c",
+    "sha256": "1eea2122a41df5e4a7e31b934059ea3ab123fb4a7c73b6c59008b50320f4edd5",
+    "precision_only_change": false
+  },
+  "convexity/derivative_bounds.c": {
+    "source": "trusted/convexity/src/derivative_bounds.c",
+    "sha256": "63d617ba71cc5358e3507129d62b96d504b2f9c78a3f78604d206312fe9fbfc5",
+    "precision_only_change": true
+  },
+  "convexity/basic_functions.c": {
+    "source": "trusted/convexity/src/basic_functions.c",
+    "sha256": "758da6a91cb246eb13617f544e7ec766be501d4d59ccba4cb80daa1f6ce8dc7b",
+    "precision_only_change": false
+  },
+  "convexity/root_local_t1.c": {
+    "source": "trusted/convexity/src/root_local_t1.c",
+    "sha256": "5a40b75c14525e53fc455ad70f091c2f705d6e740ffb6701d290f3e916af1d60",
+    "precision_only_change": true
+  },
+  "convexity/complex_functions.c": {
+    "source": "trusted/convexity/src/complex_functions.c",
+    "sha256": "c6570644d09c5769ecadaadca92abff44f96652cb3f9e63c959fa2a46bb2205d",
+    "precision_only_change": false
+  },
+  "src/matrix_driver.c": {
+    "source": "trusted/uniqueness/src/matrix_driver.c",
+    "sha256": "f847651787d734919356443720f10467cf682bfe0c53e4eb9540766e6c91a862",
+    "precision_only_change": true
+  },
+  "src/refine.c": {
+    "source": "trusted/uniqueness/src/refine.c",
+    "sha256": "552d058de26567860be145267803f8ef4bc52e8a5b049bcb68d38f1fb9491089",
+    "precision_only_change": false
+  },
+  "src/test_refine.c": {
+    "source": "trusted/uniqueness/src/test_refine.c",
+    "sha256": "fbcf2ea17e127be15fe211accd8b2725420c5166e7ddda9a9a8a952c6e7fe4cf",
+    "precision_only_change": false
+  },
+  "src/supplemental_scalars.c": {
+    "source": "audit/computational-exposition-2026-10-10/supplemental_scalars.c",
+    "sha256": "9b20754f01e362b11276b2ac7af51c7fcb72111938c78896e753fb1a6efd9930",
+    "precision_only_change": true
+  }
+}
