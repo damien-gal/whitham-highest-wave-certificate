@@ -1,3 +1,8 @@
+/* derivative_bounds.h: derivative jets shared by the convexity programs.
+ * derivative_defect_jets() encloses the derivatives of R = V/(2U) - U/2, so
+ * that F_1 = R' and F_2 = x R''; derivative_cusp_errors() gives the cusp
+ * remainder bounds of derivative_cusp.c.
+ */
 #ifndef DERIVATIVE_BOUNDS_H
 #define DERIVATIVE_BOUNDS_H
 #include "complex_functions.h"

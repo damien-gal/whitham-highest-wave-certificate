@@ -48,24 +48,23 @@ def atomic(path,obj):
 def now():return datetime.now(timezone.utc).isoformat()
 def sources():
  paths=[ROOT/'Makefile',ROOT/'precision.h',ROOT/'PROOF.md',ROOT/'import-manifest.json',Path(__file__)]
- for part in ['src','existence','convexity','inputs']:
+ for part in ['core','src','existence','convexity','inputs']:
   paths += [p for p in (ROOT/part).rglob('*') if p.is_file()]
  return {str(p.relative_to(ROOT)):sha(p) for p in sorted(paths)}
 def check_inputs():
  text=(ROOT/'precision.h').read_text();require(re.search(r'^#define CAP_PREC 128$',text,re.M),'Common precision must be 128')
  candidate=json.loads((ROOT/'inputs/approximation.json').read_text())
- for folder in ['existence','convexity']:
-  text=(ROOT/folder/'basic_functions.c').read_text()
-  actual=dict(re.findall(r'arb_set_str\(up->([^,]+),"([^"]+)",prec\);',text))
-  require(actual==candidate['assignments'],'Exact approximation manifest differs from '+folder)
+ text=(ROOT/'core/basic_functions.c').read_text()
+ actual=dict(re.findall(r'arb_set_str\(up->([^,]+),"([^"]+)",prec\);',text))
+ require(actual==candidate['assignments'],'Exact approximation manifest differs from core/basic_functions.c')
  closure=json.loads((ROOT/'inputs/closure.json').read_text())
- declared=dict(re.findall(r'(\w+)=decimal\("([^" ]+)"\)',(ROOT/'src/closure.c').read_text()))
+ declared=dict(re.findall(r'(\w+)\s*=\s*decimal\("([^" ]+)"\)',(ROOT/'src/closure.c').read_text()))
  for c_name,key in {'A':'A','r':'r','q0':'q0','d0':'delta0','d1':'delta1','d2':'delta2','a1':'alpha1','a2':'alpha2','af':'alphaf'}.items():
   require(Decimal(declared[c_name])==Decimal(closure[key]),'Scalar input mismatch '+key)
  require(closure['operator_mode']=='raw' and all(Decimal(closure[k])==Decimal('.998') for k in ['q0','q1','q2']) and Decimal(closure['curvature_budget'])==Decimal('.089'),'Unsupported scalar contract')
  manifest=json.loads((ROOT/'inputs/kernel-sign.json').read_text());code=(ROOT/'src/kernel.c').read_text()
  for side in ['minus','plus']:
-  found=re.findall(r'arb_set_str\('+side+r'\+(\d+),"([^"]+)",CAP_PREC\)',code)
+  found=re.findall(r'arb_set_str\('+side+r'\s*\+\s*(\d+),\s*"([^"]+)",\s*CAP_PREC\)',code)
   require([int(i) for i,_ in found]==list(range(13)) and [v for _,v in found]==manifest['coeffs'][side],'C root coefficients differ')
  require(sha(ROOT/'inputs/grid720.bin')=='b0d0c1783ca0700ff2cf65e520d2e59fe7513718103e00671181113bbe6f26d2','Exact grid input')
  # Bind mathematical inputs to the current paper, not a whole-file frozen hash.

@@ -1,7 +1,11 @@
-/* AI-assisted interval normalized-profile interface, 2026-10-10.
- * Reuses the frozen derivative cusp coefficient and remainder implementation.
- * Compile this translation unit instead of derivative_cusp.c for operator
- * drivers that require both derivative_cusp_errors and this extra API. */
+/* derivative_profile.c: interval jets of the normalized profile near the cusp.
+ *
+ * Reuses the coefficient tables and remainder bounds of derivative_cusp.c
+ * (included as a library) and provides derivative_profile_jets(), which
+ * encloses x^j U^(j)(x)/sqrt(x), j = 0, 1, 2, for all x in an interval
+ * X with 0 < X <= 0.1. The operator programs link this translation unit
+ * instead of derivative_cusp.c.
+ */
 #define DERIVATIVE_CUSP_LIBRARY
 #include "derivative_cusp.c"
 
@@ -9,8 +13,7 @@
  * The source's exact input is fixed at first call, as in derivative_cusp_errors.
  * Returns 1 only for a finite enclosure on 0<X<=0.1 at the working precision CAP_PREC.
  * No mutable global manuscript or existence code is used. */
-int derivative_profile_jets(arb_ptr out, const arb_t X,
-                            u_params_struct *params, slong prec) {
+int derivative_profile_jets(arb_ptr out, const arb_t X, u_params_struct *params, slong prec) {
   arb_t limit, eps, e, a, power, tail, sq;
   arb_init(limit);
   arb_init(eps);
@@ -21,7 +24,8 @@ int derivative_profile_jets(arb_ptr out, const arb_t X,
   arb_init(sq);
   arb_set_str(limit, "0.1", P);
   int ok = prec == P && arb_is_positive(X) && arb_le(X, limit);
-  if (!ok) goto done;
+  if (!ok)
+    goto done;
   if (!initialized) {
     up = *params;
     build_tables();
@@ -49,8 +53,10 @@ int derivative_profile_jets(arb_ptr out, const arb_t X,
     arb_add_error(out + d, tail);
     ok = ok && arb_is_finite(out + d);
   }
- done:
-  if (!ok) for (int d = 0; d < 3; ++d) arb_indeterminate(out + d);
+done:
+  if (!ok)
+    for (int d = 0; d < 3; ++d)
+      arb_indeterminate(out + d);
   arb_clear(limit);
   arb_clear(eps);
   arb_clear(e);

@@ -1,12 +1,10 @@
-/* Blah blah blah. Javi */
-
+/* basic_functions.c: shared evaluators of the computer-assisted proof.
+ * See basic_functions.h for the list of routines. The Fourier sums are
+ * truncated after n = TANH_MAX and their tails are bounded by the Fourier-tail
+ * lemma of Appendix B (compute_tail_error).
+ */
 #include "basic_functions.h"
 #include "assert.h"
-int clausen_cached(arb_t,const arb_t,const arb_t,int,slong);
-
-
-// TODO: Efficiency (!!!) Lo que mas tarda es el init, en vez del polylog (!!!!).
-
 
 void arb_clausen_sin_direct(arb_t out, const arb_t s, const arb_t x, slong prec){
   if(clausen_cached(out,s,x,1,prec)) return;
@@ -161,111 +159,11 @@ void arb_clausen_sin(arb_t out, const arb_t s, const arb_t x, slong prec){
   
 }
 
-// Cosintegral function
-// Due to the suboptimal performance of the arb function for big real intervals,
-// we combine it with a Taylor expansion at infinity
-// 1/x*(sin(x)-1/x*(cos(x)+1)) <= Ci(x) <= 1/x*(sin(x)-1/x*(cos(x)-1))
-void arb_cosintegral(arb_t out, const arb_t x, slong prec){
-  arb_t cos, sin, aux;
-  arb_t ub, lb;
-  
-  arb_init(cos);
-  arb_init(sin);
-  arb_init(aux);
-  
-  arb_init(ub);
-  arb_init(lb);
-
-  // arb-cosintegral. good for small arguments
-  arb_hypgeom_ci(aux, x, prec);
-
-  // Taylor expansion at infinity. good for large arguments
-  arb_sin_cos(sin,cos,x,prec);
-
-  arb_set(ub,cos);
-  arb_neg(ub,ub);
-  // ub = -cos(x)+1, lb = -cos(x)-1
-  arb_add_si(ub,ub,1,prec);
-  arb_sub_si(lb,ub,2,prec);
-  arb_div(ub,ub,x,prec);
-  arb_div(lb,lb,x,prec);
-  arb_add(ub,ub,sin,prec);
-  arb_add(lb,lb,sin,prec);
-  arb_div(ub,ub,x,prec);
-  arb_div(lb,lb,x,prec);
-  
-  arb_union(lb,lb,ub,prec);
-
-  if (arb_is_finite(aux)){
-    arb_intersection(out,aux,lb,prec);
-  }
-  else arb_set(out,lb);
-  
-  arb_clear(cos);
-  arb_clear(sin);
-  arb_clear(aux);
-  
-  arb_clear(ub);
-  arb_clear(lb);
-}
-
-
-
-// TODO(Javi): Maybe this function is not needed
-// Fresnel-sine function
-// Due to the suboptimal performance of the arb function for big real intervals,
-// we combine it with a Taylor expansion at infinity
-// ...
-void arb_fresnel_sin_cos(arb_t out1, arb_t out2, const arb_t x, slong prec){
-  arb_t cos,sin, aux;
-  arb_t ub, lb;
-  
-  arb_init(cos);
-  arb_init(sin);
-  arb_init(aux);
-  
-  arb_init(ub);
-  arb_init(lb);
-
-  // arb-fresnel. good for small arguments
-  arb_hypgeom_fresnel(out1, out2, x, 1, prec);
-/*  arb_hypgeom_ci(aux, x, prec);
-
-  // Taylor expansion at infinity. good for large arguments
-  arb_sin_cos(sin,cos,x,prec);
-
-  arb_set(ub,cos);
-  arb_neg(ub,ub);
-  // ub = -cos(x)+1, lb = -cos(x)-1
-  arb_add_si(ub,ub,1,prec);
-  arb_sub_si(lb,ub,2,prec);
-  arb_div(ub,ub,x,prec);
-  arb_div(lb,lb,x,prec);
-  arb_add(ub,ub,sin,prec);
-  arb_add(lb,lb,sin,prec);
-  arb_div(ub,ub,x,prec);
-  arb_div(lb,lb,x,prec);
-  
-  arb_union(lb,lb,ub,prec);
-
-  if (arb_is_finite(aux)){
-    arb_intersection(out,aux,lb,prec);
-  }
-  else arb_set(out,lb);
-  */
-  arb_clear(cos);
-  arb_clear(sin);
-  arb_clear(aux);
-  
-  arb_clear(ub);
-  arb_clear(lb);
-}
-
-
-
-
-// Basic functions related to tail estimates. Main tail estimate.
-// Computes error bounds on \sum_{n>=N0} (\sqrt{tanh(nx)}-1)*n^{exponent}. See Appendix B.
+// The Fourier-tail lemma of Appendix B with p = exponent and n_0 = N0:
+//   sum_{n>=n_0} n^p (1 - sqrt(tanh n)) <= 2 n_0^{min(p,0)} / (e^{n_0 q} - e^{(n_0-1) q}),
+//   q = 2 - max(p,0) log(n_0)/n_0 > 0.
+// Evaluated with ball arithmetic in the exponent, so the result bounds the
+// tail for every exponent in the ball. The positivity of q is asserted.
 void compute_tail_error(arb_ptr out, const arb_t exponent, const int N0, slong prec){
 
   arb_t minp,maxp;
@@ -282,7 +180,7 @@ void compute_tail_error(arb_ptr out, const arb_t exponent, const int N0, slong p
   
   arb_zero(zero);
   
-  // TODO(Javi): Check this behaviour!!!
+  // min(p,0) and max(p,0) as balls
   arb_min(minp,zero,exponent,prec);
   arb_max(maxp,zero,exponent,prec);
   
@@ -312,7 +210,6 @@ void compute_tail_error(arb_ptr out, const arb_t exponent, const int N0, slong p
   arb_clear(aux);
   arb_clear(zero);
 }
-
 
 
 // Populates a u_params_struct with the right parameters for u0
@@ -350,27 +247,6 @@ void populate_parameters(u_params_struct* up, slong prec){
   arb_set_str(up->bi+9,"-1.847883895374688e-8",prec);
   arb_set_str(up->bi+10,"-4.463362465423652e-8",prec);
 }
-
-// We assume that ups->up has already been filled
-void populate_Integration_parameters(Integration_params_struct* ips, const arb_t x, int order, slong prec){
-  arb_init(ips->x);
-  ips->order = order;
-  arb_set(ips->x,x);
-  ips->u = _arb_vec_init(ips->order+1);
-  if (order >= 0){
-    compute_u0(ips->u,x,&(ips->up),prec);
-  }
-  if (order >= 1){
-    compute_du0(ips->u+1,x,&(ips->up),prec);
-  }
-  if (order >= 2){
-    compute_ddu0(ips->u+2,x,&(ips->up),prec);
-  }
-  if (order >= 3){
-    compute_dddu0(ips->u+3,x,&(ips->up),prec);
-  }
-}
-
 
 int compute_u0(arb_ptr out, const arb_t inp, void* params, slong prec){
   u_params_struct* up = params;
@@ -529,67 +405,6 @@ int compute_ddu0(arb_ptr out, const arb_t inp, void* params, slong prec){
     arb_mul_si(aux,aux,i,prec);
     arb_mul(aux,aux,up->bi+i-1,prec);
     arb_neg(aux,aux);
-    arb_add(biterm,biterm,aux,prec);
-  }
-  
-  
-  arb_add(out,a0kterm,a1kterm,prec);
-  arb_add(out,out,biterm,prec);
-  
-  
-  arb_clear(a0kterm);
-  arb_clear(a1kterm);
-  arb_clear(biterm);
-  
-  arb_clear(aux);
-  arb_clear(clausen);
-  arb_clear(argument);
-  return 0;
-}
-
-
-int compute_dddu0(arb_ptr out, const arb_t inp, void* params, slong prec){  
-  u_params_struct* up = params;
-  arb_t a0kterm,a1kterm,biterm;
-  arb_t aux;
-  arb_t clausen;
-  arb_t argument;
-  
-  int i;
-  
-  arb_init(a0kterm); arb_init(a1kterm); arb_init(biterm);
-  arb_zero(a0kterm); arb_zero(a1kterm); arb_zero(biterm);
-  
-  arb_init(aux); arb_init(clausen); arb_init(argument);
-  
-  for (i = 0; i < up->N0; i++){
-    arb_mul_si(argument,up->p0,i,prec);
-    arb_set_str(aux,"-1.5",prec);
-    arb_add(argument,argument,aux,prec);
-    arb_clausen_sin(clausen,argument,inp,prec);
-    arb_mul(clausen,clausen,up->a0k+i,prec);
-    arb_neg(clausen,clausen);
-    arb_add(a0kterm,a0kterm,clausen,prec);
-  }
-  
-  for (i = 0; i < up->N1; i++){
-    arb_mul_si(argument,up->p0,i,prec);
-    arb_add(argument,argument,up->p1,prec);
-    arb_set_str(aux,"-1.5",prec);
-    arb_add(argument,argument,aux,prec);
-    arb_clausen_sin(clausen,argument,inp,prec);
-    arb_mul(clausen,clausen,up->a1k+i,prec);
-    arb_neg(clausen,clausen);
-    arb_add(a1kterm,a1kterm,clausen,prec);
-  }
-  
-  for (i = 1; i <= up->N2; i++){
-    arb_mul_si(aux,inp,i,prec);
-    arb_sin(aux,aux,prec);
-    arb_mul_si(aux,aux,i,prec);
-    arb_mul_si(aux,aux,i,prec);
-    arb_mul_si(aux,aux,i,prec);
-    arb_mul(aux,aux,up->bi+i-1,prec);
     arb_add(biterm,biterm,aux,prec);
   }
   
@@ -790,9 +605,7 @@ int compute_dLu0(arb_ptr out, const arb_t inp, void* params, slong prec){
     arb_mul_si(argument,up->p0,i,prec);
     arb_set_str(aux,"1",prec);
     arb_add(argument,argument,aux,prec);
-//    arb_zeta(zeta,argument,prec);
     arb_clausen_sin(clausen,argument,inp,prec);
-//    arb_sub(aux,zeta,clausen,prec);
     arb_mul(aux,clausen,up->a0k+i,prec);
     arb_add(a0kterm,a0kterm,aux,prec);
   }
@@ -803,9 +616,7 @@ int compute_dLu0(arb_ptr out, const arb_t inp, void* params, slong prec){
     arb_add(argument,argument,up->p1,prec);
     arb_set_str(aux,"1",prec);
     arb_add(argument,argument,aux,prec);
-//    arb_zeta(zeta,argument,prec);
     arb_clausen_sin(clausen,argument,inp,prec);
-//    arb_sub(aux,zeta,clausen,prec);
     arb_mul(aux,clausen,up->a1k+i,prec);
     arb_add(a1kterm,a1kterm,aux,prec);
   }
@@ -937,8 +748,6 @@ int compute_ddLu0(arb_ptr out, const arb_t inp, void* params, slong prec){
   // Main term
   for (i = 0; i < up->N0; i++){
     arb_mul_si(argument,up->p0,i,prec);
-//    arb_set_str(aux,"1",prec);
-//    arb_add(argument,argument,aux,prec);
     arb_clausen_cos(clausen,argument,inp,prec);
     arb_mul(aux,clausen,up->a0k+i,prec);
     arb_add(a0kterm,a0kterm,aux,prec);
@@ -948,8 +757,6 @@ int compute_ddLu0(arb_ptr out, const arb_t inp, void* params, slong prec){
   for (i = 0; i < up->N1; i++){
     arb_mul_si(argument,up->p0,i,prec);
     arb_add(argument,argument,up->p1,prec);
-//    arb_set_str(aux,"1",prec);
-//    arb_add(argument,argument,aux,prec);
     arb_clausen_cos(clausen,argument,inp,prec);
     arb_mul(aux,clausen,up->a1k+i,prec);
     arb_add(a1kterm,a1kterm,aux,prec);
@@ -958,8 +765,6 @@ int compute_ddLu0(arb_ptr out, const arb_t inp, void* params, slong prec){
   // Correction N0
   for (i = 0; i < up->N0; i++){
     arb_mul_si(argument,up->p0,i,prec);
-//    arb_set_str(aux,"1",prec);
-//    arb_add(argument,argument,aux,prec);
     arb_neg(argument,argument);
     
     compute_tail_error(error_tail,argument,TANH_MAX+1,prec);
@@ -992,8 +797,6 @@ int compute_ddLu0(arb_ptr out, const arb_t inp, void* params, slong prec){
   for (i = 0; i < up->N1; i++){
     arb_mul_si(argument,up->p0,i,prec);
     arb_add(argument,argument,up->p1,prec);
-//    arb_set_str(aux,"1",prec);
-//    arb_add(argument,argument,aux,prec);
     arb_neg(argument,argument);
     
     compute_tail_error(error_tail,argument,TANH_MAX+1,prec);
@@ -1059,157 +862,13 @@ int compute_ddLu0(arb_ptr out, const arb_t inp, void* params, slong prec){
 }
 
 
-int compute_dddLu0(arb_ptr out, const arb_t inp, void* params, slong prec){
-  u_params_struct* up = params;
-  arb_t a0kterm,a1kterm,biterm;
-  arb_t aux, aux2;
-  arb_t clausen;
-  arb_t zeta;
-  arb_t argument;
-  arb_t error_tail;
-  arb_t pm_one;
-  
-  int i,m;
-  
-  arb_init(a0kterm); arb_init(a1kterm); arb_init(biterm);
-  arb_zero(a0kterm); arb_zero(a1kterm); arb_zero(biterm);
-  
-  arb_init(aux); arb_init(aux2);
-  arb_init(clausen); arb_init(zeta); arb_init(argument); arb_init(error_tail); arb_init(pm_one);
-  arb_zero_pm_one(pm_one);
-  
-  // Main term
-  for (i = 0; i < up->N0; i++){
-    arb_mul_si(argument,up->p0,i,prec);
-    arb_set_str(aux,"-1",prec);
-    arb_add(argument,argument,aux,prec);
-    arb_clausen_sin(clausen,argument,inp,prec);
-    arb_mul(aux,clausen,up->a0k+i,prec);
-    arb_neg(aux,aux);
-    arb_add(a0kterm,a0kterm,aux,prec);
-  }
-  
-  // Main term
-  for (i = 0; i < up->N1; i++){
-    arb_mul_si(argument,up->p0,i,prec);
-    arb_add(argument,argument,up->p1,prec);
-    arb_set_str(aux,"-1",prec);
-    arb_add(argument,argument,aux,prec);
-    arb_clausen_sin(clausen,argument,inp,prec);
-    arb_mul(aux,clausen,up->a1k+i,prec);
-    arb_neg(aux,aux);
-    arb_add(a1kterm,a1kterm,aux,prec);
-  }
-  
-  // Correction N0
-  for (i = 0; i < up->N0; i++){
-    arb_mul_si(argument,up->p0,i,prec);
-    arb_set_str(aux,"-1",prec);
-    arb_add(argument,argument,aux,prec);
-    arb_neg(argument,argument);
-    
-    compute_tail_error(error_tail,argument,TANH_MAX+1,prec);
-    arb_mul(error_tail,error_tail,up->a0k+i,prec);
-    for (m = 1; m <= TANH_MAX; m++){
-      
-      arb_set_si(aux2,m);
-      arb_tanh(aux2,aux2,prec);
-      arb_sqrt(aux2,aux2,prec);
-      arb_sub_si(aux2,aux2,1,prec);
-      
-      arb_mul_si(aux,inp,m,prec);
-      arb_sin(aux,aux,prec);
-      arb_neg(aux,aux);
-      
-      arb_mul(aux,aux,aux2,prec);
-      
-      arb_set_si(aux2,m);
-      arb_pow(aux2,aux2,argument,prec);
-      
-      arb_mul(aux,aux,aux2,prec);
-      arb_mul(aux,aux,up->a0k+i,prec);
-      arb_add(a0kterm,a0kterm,aux,prec);
-    }
-    // Tail N0
-    arb_mul(error_tail,error_tail,pm_one,prec);
-    arb_add(a0kterm,a0kterm,error_tail,prec);
-  }
-  
-  // Correction N1
-  for (i = 0; i < up->N1; i++){
-    arb_mul_si(argument,up->p0,i,prec);
-    arb_add(argument,argument,up->p1,prec);
-    arb_set_str(aux,"-1",prec);
-    arb_add(argument,argument,aux,prec);
-    arb_neg(argument,argument);
-    
-    compute_tail_error(error_tail,argument,TANH_MAX+1,prec);
-    arb_mul(error_tail,error_tail,up->a1k+i,prec);
-    for (m = 1; m <= TANH_MAX; m++){
-      
-      arb_set_si(aux2,m);
-      arb_tanh(aux2,aux2,prec);
-      arb_sqrt(aux2,aux2,prec);
-      arb_sub_si(aux2,aux2,1,prec);
-      
-      arb_mul_si(aux,inp,m,prec);
-      arb_sin(aux,aux,prec);
-      arb_neg(aux,aux);
-      
-      arb_mul(aux,aux,aux2,prec);
-      
-      arb_set_si(aux2,m);
-      arb_pow(aux2,aux2,argument,prec);
-      
-      arb_mul(aux,aux,aux2,prec);
-      arb_mul(aux,aux,up->a1k+i,prec);
-      arb_add(a1kterm,a1kterm,aux,prec);
-    }
-    // Tail N1
-    arb_mul(error_tail,error_tail,pm_one,prec);
-    arb_add(a1kterm,a1kterm,error_tail,prec);
-  }
-  
-  for (i = 1; i <= up->N2; i++){
-    // b_k*(cos(k*x)-1)
-    arb_mul_si(aux,inp,i,prec);
-    arb_sin(aux,aux,prec);
-//    arb_neg(aux,aux);
-    arb_mul(aux,aux,up->bi+i-1,prec);
-    
-    //sqrt(k*tanh(k))*k
-    arb_set_si(aux2,i);
-    arb_tanh(aux2,aux2,prec);
-    arb_mul_si(aux2,aux2,i,prec);
-    arb_sqrt(aux2,aux2,prec);
-    arb_mul_si(aux2,aux2,i,prec);
-    arb_mul_si(aux2,aux2,i,prec);
-    
-    arb_mul(aux,aux,aux2,prec);
-    arb_add(biterm,biterm,aux,prec);
-  }
-  
-  
-  arb_add(out,a0kterm,a1kterm,prec);
-  arb_add(out,out,biterm,prec);
-  
-  
-  arb_clear(a0kterm);
-  arb_clear(a1kterm);
-  arb_clear(biterm);
-  
-  arb_clear(aux); arb_clear(aux2);
-  arb_clear(clausen);
-  arb_clear(zeta);
-  arb_clear(argument);
-  arb_clear(error_tail);
-  arb_clear(pm_one);
-  return 0;
-}
-
-
-// TODO(Javi): Explicar mejor lo de la funcion zeta.
-// TODO(Javi): IIKp is chosen as the integral from 0 to x, so there is an integration constant that has to do with the zeta function... explain a little more!
+// Second primitive of the kernel vanishing at 0 together with its derivative:
+// integrating the Fourier series termwise gives
+//   IIKp(x) = (1/pi) [ x^2/4 - sum_{m>=1} sqrt(tanh m) (cos(mx) - 1) / m^{5/2} ].
+// The sum with weights 1 is Cl_{5/2}(x) - zeta(5/2) (the constant comes from
+// the value of the cosine Clausen function at 0); the correction with the
+// weights sqrt(tanh m) - 1 is summed up to m = TANH_MAX and its tail is
+// bounded by compute_tail_error, using |cos(mx) - 1| <= 2.
 void IIKp(arb_t out, const arb_t x, slong prec){
   arb_t argument;
   arb_t error_tail;
@@ -1512,11 +1171,6 @@ void ddKp(arb_t out, const arb_t x, slong prec){
   arb_clear(pm_one);
   arb_clear(aux); arb_clear(aux2);
   
-}
-
-int zero(arb_ptr out, const arb_t delta, void* params, slong prec){
-  arb_set_str(out,"0",prec);
-  return 1;
 }
 
 

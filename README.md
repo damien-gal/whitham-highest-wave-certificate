@@ -43,17 +43,24 @@ Another installation prefix is passed as `FLINT_PREFIX=<prefix> make verify`.
   with at most two processes, checks their printed contracts and coverage
   records, binds the exact kernel-sign inputs to Appendix C of the paper, and
   writes `artifacts/certificate.json` together with one log per stage.
-- `existence/` and `convexity/` are the C cores for the approximate solution,
-  its defect, the derivative and curvature bounds, and the operator norms.
-- `src/` contains the ported kernel arithmetic, the kernel-sign certificate, the
-  kernel moment matrices, the exact integer refinement and the uniqueness
-  comparison.
+- `core/` contains the shared evaluators: the special functions, the
+  approximate solution and its derivatives, the cusp expansions with their
+  remainders and the scalar constants; every program links against it.
+- `existence/` contains the programs for the defect bound, the operator norm
+  of $T_0$, the scalar conditions and the evaluator regression checks.
+- `convexity/` contains the programs for the derivative and curvature bounds
+  near the cusp and on the compact interval, the local $T_1$ and $T_2$
+  estimates and the operator norms of $T_1$ and $T_2$.
+- `src/` contains the kernel arithmetic, the kernel-sign certificate, the
+  kernel moment matrices, the exact integer refinement, the uniqueness
+  comparison and the scalar assembly of the correction bounds.
 - `inputs/` holds the exact inputs: the approximation coefficients
   (`approximation.json`), the kernel-sign polynomials and targets
   (`kernel-sign.json`), the closure constants (`closure.json`) and the 720-node
   refinement grid (`grid720.bin`, binary64).
-- `PROOF.md` maps every stage to the analytic argument of the paper;
-  `import-manifest.json` records the provenance of the inherited sources.
+- `PROOF.md` maps every stage to the statements of the paper and describes
+  the constructions; `import-manifest.json` records the provenance of every
+  source file.
 
 The stages and the bounds they assert are those of the summary table of
 Appendix B of the paper (its last column names the stage):
@@ -109,6 +116,19 @@ reference environment above. Two stages run concurrently.
 | `sign` | 0.5 s |
 | all other stages | under 1 s each |
 | **Total (two workers)** | **486 s** |
+
+## Provenance
+
+The evaluators of `core/` descend from the authors' original C/Arb
+implementation of the existence part (2023-2024): the working precision was
+unified, routines that no program calls were removed and the working notes
+were turned into documentation. The programs of `existence/`, `convexity/`
+and `src/` were written in 2026 for this package; those of `src/` that
+concern the kernel and the uniqueness comparison port the authors' earlier
+Python implementation to C. The code written in 2026 was produced with the
+assistance of large language models, as stated in the paper, and was checked
+by the authors. `import-manifest.json` lists, for every file, its origin and
+the edits made since it entered the package.
 
 ## License
 
