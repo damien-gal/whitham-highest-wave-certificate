@@ -2,8 +2,10 @@
 
 This directory contains the code for the computer-assisted parts of the paper
 *Uniqueness, convexity and sharp asymptotics for Whitham's highest wave*. It is
-distributed with the paper as arXiv ancillary files and lives in the authors'
-repository as `certificate/`.
+distributed with the paper as arXiv ancillary files and is also kept at
+<https://github.com/damien-gal/whitham-highest-wave-certificate> (private until
+publication); in the authors' working repository it is the directory
+`certificate/`.
 
 ## Authors
 
