@@ -2,12 +2,12 @@
  *
  * Certifies the inequality (ineqT2) of the paper on 0 < x <= eps (eps = 0.002
  * in the certificate) from the cusp expansions of u_0 and the derivative
- * jets of derivative_cusp.c, and prints the residual (< -0.188). The
+ * jets of cusp.c, and prints the residual (< -0.188). The
  * derivation is the local T_2 estimate of Appendix B. With a larger eps the
  * inequality fails and the program returns UNRESOLVED (rejection test).
  */
 #include "constant_functions.h"
-#include "derivative_bounds.h"
+#include "cusp.h"
 #include <stdlib.h>
 static const slong p = CAP_PREC;
 static u_params_struct up;

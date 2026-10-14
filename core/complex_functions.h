@@ -10,7 +10,7 @@
 #include "basic_functions.h"
 
 /* The coefficient functions of the lemma on the coefficient bounds, whose
-   suprema over (0, pi] are alpha_1, alpha_2 and alpha_f (derivative_bounds.c
+   suprema over (0, pi] are alpha_1, alpha_2 and alpha_f (derivative_compact.c
    bounds them on the compact cells; derivative_cusp.c handles the cusp). */
 int compute_alpha1(arb_ptr out, const arb_t inp, void* params, slong prec);
 int compute_alpha2(arb_ptr out, const arb_t inp, void* params, slong prec);

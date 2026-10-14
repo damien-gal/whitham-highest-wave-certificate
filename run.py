@@ -12,13 +12,13 @@ import argparse, fcntl, hashlib, json, os, platform, re, subprocess, sys, time
 ROOT=Path(__file__).resolve().parent
 OUT=ROOT/'artifacts'
 JOBS={
- 'existence':(['build/verify','0.05','compact'],0,'u0/F0 compact coverage: PASS'),
- 'T0':(['build/norm'],0,'T0 compact coverage PASS'),
+ 'existence':(['build/defect','0.05','compact'],0,'u0/F0 compact coverage: PASS'),
+ 'T0':(['build/norm_t0'],0,'T0 compact coverage PASS'),
  'supplemental_scalars':(['build/supplemental_scalars'],0,'PASS supplemental scalar comparisons'),
  'scalars':(['build/scalars'],0,'SCALAR CONDITIONS PASS'),
  'evaluators':(['build/test_evaluators'],0,'regression checks: PASS'),
  'derivative_cusp':(['build/derivative_cusp','0.05'],0,'DERIVATIVE CUSP PASS'),
- 'derivative_compact':(['build/derivative_bounds','0.05'],0,'DERIVATIVE COMPACT PASS'),
+ 'derivative_compact':(['build/derivative_compact','0.05'],0,'DERIVATIVE COMPACT PASS'),
  'local1':(['build/local_t1','0.002'],0,'LOCAL T1 PASS'),
  'local2':(['build/local_t2','0.002'],0,'LOCAL T2 PASS'),
  'operator_regression':(['build/operators','crosscheck'],0,'global kernel crosscheck PASS'),
@@ -29,8 +29,8 @@ JOBS={
  'kernel_tests':(['build/test_kernel'],0,'PASS ball conversion tests'),
  'closure':(['build/closure'],0,'PASS scalar closure CONDITIONAL'),
  'matrix':(['build/matrix','inputs/grid720.bin','720','artifacts/moments.bin'],0,'PASS: kernel moment'),
- 'reject_defect':(['build/verify','0.05','compact','--reject-test'],2,'UNRESOLVED'),
- 'reject_derivatives':(['build/derivative_bounds','0.05','--reject-test'],2,'UNRESOLVED'),
+ 'reject_defect':(['build/defect','0.05','compact','--reject-test'],2,'UNRESOLVED'),
+ 'reject_derivatives':(['build/derivative_compact','0.05','--reject-test'],2,'UNRESOLVED'),
  'reject_T1':(['build/operators','1','.1','reject'],2,'UNRESOLVED'),
  'reject_T2':(['build/operators','2','.1','reject'],2,'UNRESOLVED'),
  'reject_local1':(['build/local_t1','0.5'],2,'UNRESOLVED'),
@@ -38,8 +38,8 @@ JOBS={
  'reject_sign':(['build/sign','reject'],2,'UNRESOLVED'),
 }
 LATE={
- 'uniqueness':(['build/uniqueness','inputs/grid720.bin','artifacts/moments.bin'],0,'PASS uniqueness full cusp and 719 compact cells'),
- 'reject_uniqueness':(['build/uniqueness','inputs/grid720.bin','artifacts/moments.bin','reject'],2,'UNRESOLVED: cusp comparison target')}
+ 'uniqueness':(['build/comparison','inputs/grid720.bin','artifacts/moments.bin'],0,'PASS uniqueness full cusp and 719 compact cells'),
+ 'reject_uniqueness':(['build/comparison','inputs/grid720.bin','artifacts/moments.bin','reject'],2,'UNRESOLVED: cusp comparison target')}
 def require(ok,message):
  if not ok:raise RuntimeError(message)
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -48,7 +48,7 @@ def atomic(path,obj):
 def now():return datetime.now(timezone.utc).isoformat()
 def sources():
  paths=[ROOT/'Makefile',ROOT/'precision.h',ROOT/'PROOF.md',ROOT/'import-manifest.json',Path(__file__)]
- for part in ['core','src','existence','convexity','inputs']:
+ for part in ['core','existence','convexity','uniqueness','inputs']:
   paths += [p for p in (ROOT/part).rglob('*') if p.is_file()]
  return {str(p.relative_to(ROOT)):sha(p) for p in sorted(paths)}
 def check_inputs():
@@ -58,11 +58,11 @@ def check_inputs():
  actual=dict(re.findall(r'arb_set_str\(up->([^,]+),"([^"]+)",prec\);',text))
  require(actual==candidate['assignments'],'Exact approximation manifest differs from core/basic_functions.c')
  closure=json.loads((ROOT/'inputs/closure.json').read_text())
- declared=dict(re.findall(r'(\w+)\s*=\s*decimal\("([^" ]+)"\)',(ROOT/'src/closure.c').read_text()))
+ declared=dict(re.findall(r'(\w+)\s*=\s*decimal\("([^" ]+)"\)',(ROOT/'convexity/closure.c').read_text()))
  for c_name,key in {'A':'A','r':'r','q0':'q0','d0':'delta0','d1':'delta1','d2':'delta2','a1':'alpha1','a2':'alpha2','af':'alphaf'}.items():
   require(Decimal(declared[c_name])==Decimal(closure[key]),'Scalar input mismatch '+key)
  require(closure['operator_mode']=='raw' and all(Decimal(closure[k])==Decimal('.998') for k in ['q0','q1','q2']) and Decimal(closure['curvature_budget'])==Decimal('.089'),'Unsupported scalar contract')
- manifest=json.loads((ROOT/'inputs/kernel-sign.json').read_text());code=(ROOT/'src/kernel.c').read_text()
+ manifest=json.loads((ROOT/'inputs/kernel-sign.json').read_text());code=(ROOT/'uniqueness/kernel.c').read_text()
  for side in ['minus','plus']:
   found=re.findall(r'arb_set_str\('+side+r'\s*\+\s*(\d+),\s*"([^"]+)",\s*CAP_PREC\)',code)
   require([int(i) for i,_ in found]==list(range(13)) and [v for _,v in found]==manifest['coeffs'][side],'C root coefficients differ')
@@ -104,7 +104,7 @@ def run(name,spec):
  result={'status':'PASS','precision_bits':128,'command':cmd,'exit_code':r.returncode,'success_marker':marker,'elapsed_seconds':time.monotonic()-start,'binary_sha256':binary,'log_sha256':sha(log)}
  atomic(OUT/(name+'.json'),result);print('PASS',name,round(result['elapsed_seconds'],2),'s',flush=True);return result
 def libraries():
- text=subprocess.check_output(['ldd',str(ROOT/'build/uniqueness')],text=True)
+ text=subprocess.check_output(['ldd',str(ROOT/'build/comparison')],text=True)
  paths=re.findall(r'(?:=> )?(/\S+)\s+\(',text)
  return {p:sha(Path(p)) for p in paths}
 def headers():

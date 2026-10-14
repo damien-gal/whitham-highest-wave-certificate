@@ -7,22 +7,14 @@
  * every sum below 2^93. No floating-point arithmetic occurs in this file.
  * test_refine.c checks the discrete minimization exhaustively on small domains.
  */
-#include <stdint.h>
+#include "refine.h"
 #include <stdlib.h>
 #include <string.h>
-typedef __int128 I;
-typedef int64_t V;
 #define SHIFT 10
-static I square(V q) {
+I refine_square(V q) {
   return ((I)q * q) << SHIFT;
 }
-typedef struct {
-  int n;
-  const V *v;
-  V *s;
-  I *sv;
-} Sum;
-static Sum make(const V *a, const V *v, int n) {
+Sum refine_make(const V *a, const V *v, int n) {
   Sum r = {n, v, malloc((n + 1) * sizeof(V)), malloc((n + 1) * sizeof(I))};
   r.s[0] = 0;
   r.sv[0] = 0;
@@ -32,7 +24,7 @@ static Sum make(const V *a, const V *v, int n) {
   }
   return r;
 }
-static void clear(Sum *s) {
+void refine_clear(Sum *s) {
   free(s->s);
   free(s->sv);
 }
@@ -59,7 +51,7 @@ static V isqrt_up(I v, V top) {
   V lo = 0, hi = top;
   while (lo < hi) {
     V m = lo + (hi - lo) / 2;
-    if (square(m) >= v)
+    if (refine_square(m) >= v)
       hi = m;
     else
       lo = m + 1;
@@ -68,26 +60,20 @@ static V isqrt_up(I v, V top) {
 }
 static V isqrt_down(I v, V top) {
   V q = isqrt_up(v, top);
-  if (square(q) > v && q)
+  if (refine_square(q) > v && q)
     q--;
   return q;
 }
-typedef struct {
-  Sum a, b, m, c;
-  V pu, tu;
-  I err, base, outer;
-  int difference;
-} Row;
 static I pobj(const Row *r, V p) {
-  return square(p) - minimum(&r->b, p);
+  return refine_square(p) - minimum(&r->b, p);
 }
-static I inner(const Row *r, V t) {
+I refine_inner(const Row *r, V t) {
   if (!r->difference)
     return maximum(&r->a, t) - minimum(&r->b, t);
   V p = t < r->pu ? t : r->pu;
   return pobj(r, p) + maximum(&r->a, t) - minimum(&r->m, t);
 }
-static V minp(const Row *r, V lo, V hi) {
+V refine_minp(const Row *r, V lo, V hi) {
   while (lo < hi) {
     V m = lo + (hi - lo) / 2;
     if (pobj(r, m + 1) < pobj(r, m))
@@ -97,10 +83,10 @@ static V minp(const Row *r, V lo, V hi) {
   }
   return lo;
 }
-static V mint(const Row *r, V lo, V hi) {
+V refine_mint(const Row *r, V lo, V hi) {
   while (lo < hi) {
     V m = lo + (hi - lo) / 2;
-    if (inner(r, m + 1) < inner(r, m))
+    if (refine_inner(r, m + 1) < refine_inner(r, m))
       lo = m + 1;
     else
       hi = m;
@@ -109,7 +95,7 @@ static V mint(const Row *r, V lo, V hi) {
 }
 static I residual(const Row *r, V q) {
   V t = q < r->tu ? q : r->tu;
-  return square(q) - inner(r, t) + r->err - r->base - r->outer;
+  return refine_square(q) - refine_inner(r, t) + r->err - r->base - r->outer;
 }
 static V improve(const Row *r, V old, V upper) {
   if (residual(r, old) >= 0)
@@ -161,7 +147,7 @@ int advance(int n, const V *fl, const V *fh, const V *gl, const V *gh, const V *
       if (q > nl[i])
         nl[i] = q;
     }
-    if (high < square(U[i]))
+    if (high < refine_square(U[i]))
       nu[i] = isqrt_up(high, U[i]);
     if (nu[i] < nl[i])
       return -5;
@@ -169,19 +155,19 @@ int advance(int n, const V *fl, const V *fh, const V *gl, const V *gh, const V *
   for (int i = 1; i < n; i++) {
     const V *fp = fl + i * n, *gn = gh + i * n;
     Row r = {0};
-    r.a = make(fp + 1, lc + 1, i);
-    r.b = make(gn + 1, uc + 1, i);
-    r.c = make(fp + i + 1, lc + i + 1, n - i - 1);
+    r.a = refine_make(fp + 1, lc + 1, i);
+    r.b = refine_make(gn + 1, uc + 1, i);
+    r.c = refine_make(fp + i + 1, lc + i + 1, n - i - 1);
     r.base = (I)fp[0] * l0 - (I)gn[0] * h0;
     r.outer = maximum(&r.c, L[i]);
     r.err = r.a.s[r.a.n] + r.b.s[r.b.n];
-    r.tu = mint(&r, 0, U[i]);
+    r.tu = refine_mint(&r, 0, U[i]);
     V q = improve(&r, nl[i], nu[i]);
     if (q > nl[i])
       nl[i] = q;
-    clear(&r.a);
-    clear(&r.b);
-    clear(&r.c);
+    refine_clear(&r.a);
+    refine_clear(&r.b);
+    refine_clear(&r.c);
     if (differences) {
       int k = zi[i];
       if (k < 0 || k >= i)
@@ -190,22 +176,22 @@ int advance(int n, const V *fl, const V *fh, const V *gl, const V *gh, const V *
       gn = dnh + i * n;
       memset(&r, 0, sizeof(r));
       r.difference = 1;
-      r.a = make(fp + k + 1, lc + k + 1, i - k);
-      r.b = make(gn + 1, uc + 1, k);
-      r.m = make(gn + k + 1, uc + k + 1, i - k);
-      r.c = make(fp + i + 1, lc + i + 1, n - i - 1);
+      r.a = refine_make(fp + k + 1, lc + k + 1, i - k);
+      r.b = refine_make(gn + 1, uc + 1, k);
+      r.m = refine_make(gn + k + 1, uc + k + 1, i - k);
+      r.c = refine_make(fp + i + 1, lc + i + 1, n - i - 1);
       r.base = (I)fp[0] * l0 - (I)gn[0] * h0;
       r.outer = maximum(&r.c, L[i]);
-      r.pu = minp(&r, L[k], U[k]);
-      r.tu = mint(&r, L[k], U[i]);
+      r.pu = refine_minp(&r, L[k], U[k]);
+      r.tu = refine_mint(&r, L[k], U[i]);
       r.err = ((I)2 * U[k] << SHIFT) + r.b.s[r.b.n] + r.a.s[r.a.n] + r.m.s[r.m.n];
       q = improve(&r, nl[i], nu[i]);
       if (q > nl[i])
         nl[i] = q;
-      clear(&r.a);
-      clear(&r.b);
-      clear(&r.m);
-      clear(&r.c);
+      refine_clear(&r.a);
+      refine_clear(&r.b);
+      refine_clear(&r.m);
+      refine_clear(&r.c);
     }
   }
   for (int i = 1; i < n; i++)

@@ -1,11 +1,11 @@
-/* matrix_driver.c: kernel moment matrices on the refinement grid (stage matrix).
+/* matrix.c: kernel moment matrices on the refinement grid (stage matrix).
  *
  * Usage: matrix <grid.bin> <N> <output.bin>. The grid is N increasing
  * binary64 numbers whose last entry is the double nearest to pi; the output
  * holds outward binary64 enclosures of the kernel moments and of the seed
  * values of u_0 on the grid. The moments are computed with the kernel
  * primitives of core/basic_functions.c and rounded outward; they are the
- * input of uniqueness.c and are not a certificate by themselves.
+ * input of comparison.c and are not a certificate by themselves.
  */
 #include "basic_functions.h"
 #include <stdlib.h>

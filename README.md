@@ -43,17 +43,23 @@ Another installation prefix is passed as `FLINT_PREFIX=<prefix> make verify`.
   with at most two processes, checks their printed contracts and coverage
   records, binds the exact kernel-sign inputs to Appendix C of the paper, and
   writes `artifacts/certificate.json` together with one log per stage.
-- `core/` contains the shared evaluators: the special functions, the
-  approximate solution and its derivatives, the cusp expansions with their
-  remainders and the scalar constants; every program links against it.
-- `existence/` contains the programs for the defect bound, the operator norm
-  of $T_0$, the scalar conditions and the evaluator regression checks.
-- `convexity/` contains the programs for the derivative and curvature bounds
-  near the cusp and on the compact interval, the local $T_1$ and $T_2$
-  estimates and the operator norms of $T_1$ and $T_2$.
-- `src/` contains the kernel arithmetic, the kernel-sign certificate, the
-  kernel moment matrices, the exact integer refinement, the uniqueness
-  comparison and the scalar assembly of the correction bounds.
+- `core/` contains the libraries shared by all programs: the special
+  functions, the approximate solution and its derivatives, the cusp
+  expansions with their remainders and the scalar constants, and a scratch
+  arena for ball formulas.
+- `existence/` contains the programs of the existence part: the defect bound
+  (`defect.c`), the operator norm of $T_0$ (`norm_t0.c`), the scalar conditions
+  (`scalars.c`, `supplemental_scalars.c`) and the evaluator checks.
+- `convexity/` contains the programs of the convexity part: the derivative and
+  curvature bounds near the cusp (`derivative_cusp.c`) and on the compact
+  interval (`derivative_compact.c`), the local $T_1$ and $T_2$ estimates, the
+  operator norms of $T_1$ and $T_2$ (`operators.c`) and the scalar assembly of
+  the correction bounds (`closure.c`); `cusp.c` is their shared library.
+- `uniqueness/` contains the programs of the uniqueness part: the kernel-sign
+  certificate (`sign.c`), the kernel moment matrices (`matrix.c`) and the
+  a priori enclosures with the comparison (`comparison.c`), with the kernel
+  arithmetic (`kernel.c`) and the exact integer refinement (`refine.c`) as
+  libraries, plus their regression tests.
 - `inputs/` holds the exact inputs: the approximation coefficients
   (`approximation.json`), the kernel-sign polynomials and targets
   (`kernel-sign.json`), the closure constants (`closure.json`) and the 720-node
@@ -123,9 +129,9 @@ The evaluators of `core/` descend from the authors' original C/Arb
 implementation of the existence part (2023-2024): the working precision was
 unified, routines that no program calls were removed and the working notes
 were turned into documentation. The programs of `existence/`, `convexity/`
-and `src/` were written in 2026 for this package; those of `src/` that
-concern the kernel and the uniqueness comparison port the authors' earlier
-Python implementation to C. The code written in 2026 was produced with the
+and `uniqueness/` were written in 2026 for this package; the kernel-sign
+certificate, the kernel arithmetic and the uniqueness comparison port the
+authors' earlier Python implementation to C. The code written in 2026 was produced with the
 assistance of large language models, as stated in the paper, and was checked
 by the authors. `import-manifest.json` lists, for every file, its origin and
 the edits made since it entered the package.

@@ -1,20 +1,21 @@
-/* uniqueness.c: the a priori enclosures and the comparison of Sections 8-9
+/* comparison.c: the a priori enclosures and the comparison of Sections 8-9
  * and Appendix C (stages uniqueness and reject_uniqueness).
  *
- * Usage: uniqueness <grid.bin> <moments.bin> [reject]. Reads the exact
- * binary64 grid and the outward moment enclosures written by matrix_driver.c,
+ * Usage: comparison <grid.bin> <moments.bin> [reject]. Reads the exact
+ * binary64 grid and the outward moment enclosures written by matrix.c,
  * checks their sizes, order and conservation, replaces the first-cell moments
  * by weighted bounds, verifies the universal seeds (the constant A of
  * Section 8 below 0.855), runs 240 coupled cusp/nodal refinement steps with
  * the exact integer arithmetic of refine.c, and validates the cusp comparison
  * and every one of the 719 compact cells, printing one COMPARISON_CELL line
  * per cell, one BOUND line per node and the comparison constant Q < 0.982.
- * The same grid-index selection is used here and in matrix_driver.c; no
+ * The same grid-index selection is used here and in matrix.c; no
  * binary double comparison decides a mathematical inequality. With "reject"
  * the comparison target is made impossible and the program must return
  * UNRESOLVED.
  */
 #include "kernel.h"
+#include "refine.h"
 #include <math.h>
 #include <string.h>
 #include <float.h>
@@ -22,9 +23,6 @@ enum { N = 720 };
 #define BS_BITS 32
 #define CS_BITS 42
 #define BS ((int64_t)1 << BS_BITS)
-typedef int64_t V;
-int advance(int, const V *, const V *, const V *, const V *, const V *, const V *, const int *, V *,
-            V *, V, V, int);
 static Kernel k;
 static arb_ptr xs;
 static arb_t delta, rh, aG, aF;
@@ -454,7 +452,7 @@ static void comparison(V l0, int reject_test) {
   reset(m);
 }
 int main(int argc, char **argv) {
-  require(argc == 3 || argc == 4, "usage: uniqueness grid moments [reject]");
+  require(argc == 3 || argc == 4, "usage: comparison grid moments [reject]");
   kernel_init(&k, 72, 36);
   init_homogeneous();
   inputs(argv[1], argv[2]);

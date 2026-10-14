@@ -1,13 +1,13 @@
-/* root_local_t1.c: the local estimate for T_1 near the cusp (stage local1).
+/* local_t1.c: the local estimate for T_1 near the cusp (stage local1).
  *
  * Certifies the inequality (ineqT1) of the paper on 0 < x <= eps (eps = 0.002
  * in the certificate) from the cusp expansions of u_0 and the derivative jets
- * of derivative_cusp.c, and prints the residual (< -0.196). The profile and
+ * of cusp.c, and prints the residual (< -0.196). The profile and
  * regular-part helpers are shared with local_t2.c. With a larger eps the
  * inequality fails and the program returns UNRESOLVED (rejection test).
  */
 #include "constant_functions.h"
-#include "derivative_bounds.h"
+#include "cusp.h"
 #include <stdlib.h>
 static const slong p = CAP_PREC;
 static u_params_struct up;

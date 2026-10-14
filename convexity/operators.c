@@ -1,4 +1,4 @@
-/* derivative_operators.c: operator norms of T_1 and T_2 on the compact
+/* operators.c: operator norms of T_1 and T_2 on the compact
  * cells (stages T1 and T2) and the global kernel cross-check (stage
  * operator_regression).
  *
@@ -11,11 +11,12 @@
  * numbers of leaves and nodes, which run.py checks. The kernel integrals use
  * the full kernel, including its zero mode and both periodic poles, with the
  * homogeneous, regular and Fourier parts treated as in Appendix B; the cusp
- * profile comes from derivative_profile.c. The reject mode asks for an
+ * profile comes from cusp.c. The reject mode asks for an
  * impossible bound and must return UNRESOLVED.
  */
 #include "basic_functions.h"
 #include "complex_functions.h"
+#include "cusp.h"
 #include "acb_calc.h"
 #include <stdlib.h>
 #define M 24
@@ -24,7 +25,6 @@ static slong p = CAP_PREC;
 static arb_t pi, L, c, rootL, k[M], kl[M], bin[M][M], s[33], p10, p20, tp, lim;
 static u_params_struct up;
 static long calls, nodes, leaves;
-int derivative_profile_jets(arb_ptr, const arb_t, u_params_struct *, slong);
 typedef struct {
   arb_t x, u, a, d, f, w, A, B, H;
   int region, op;

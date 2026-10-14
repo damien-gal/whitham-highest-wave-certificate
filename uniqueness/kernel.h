@@ -1,6 +1,6 @@
 /* kernel.h: ball arithmetic for the Whitham kernel K, used by the kernel-sign
  * certificate (sign.c), the regression check (test_kernel.c) and the
- * uniqueness comparison (uniqueness.c). See kernel.c for the formulas.
+ * uniqueness comparison (comparison.c). See kernel.c for the formulas.
  */
 #ifndef WHITHAM_KERNEL_H
 #define WHITHAM_KERNEL_H

@@ -1,6 +1,110 @@
 {
   "description": "Provenance of the sources of the whitham-highest-wave package. 'origin' states where a file comes from; 'sha256_at_import' is the hash of the file when it entered this package from the authors' working repository, before the listed edits. The code written in 2026 was produced with the assistance of large language models, as stated in the paper, and checked by the authors.",
   "files": {
+    "Makefile": {
+      "origin": "written in October 2026 for this package"
+    },
+    "convexity/closure.c": {
+      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
+      "edits_since_import": [
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
+      ]
+    },
+    "convexity/cusp.c": {
+      "origin": "written in October 2026 for this package or its immediate predecessor",
+      "imported_from": "archive/convexity/src/derivative_cusp.c (authors' working repository)",
+      "sha256_at_import": "f123a0fa0f6cf1c5cd7e1e06f355c2d26e1db6e748610482c57e29b819cbb51c",
+      "edits_since_import": [
+        "working precision replaced by CAP_PREC",
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "split in the 2026-10-13 restructure: the tables, remainders and profile jets (formerly also derivative_profile.c) form this library, the program keeps the name derivative_cusp.c"
+      ]
+    },
+    "convexity/cusp.h": {
+      "origin": "written in October 2026 for this package (2026-10-13 restructure)"
+    },
+    "convexity/derivative_compact.c": {
+      "origin": "written in October 2026 for this package or its immediate predecessor",
+      "imported_from": "archive/convexity/src/derivative_bounds.c (authors' working repository)",
+      "sha256_at_import": "63d617ba71cc5358e3507129d62b96d504b2f9c78a3f78604d206312fe9fbfc5",
+      "edits_since_import": [
+        "working precision replaced by CAP_PREC",
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure and renamed"
+      ]
+    },
+    "convexity/derivative_cusp.c": {
+      "origin": "written in October 2026 for this package or its immediate predecessor",
+      "imported_from": "archive/convexity/src/derivative_cusp.c (authors' working repository)",
+      "sha256_at_import": "f123a0fa0f6cf1c5cd7e1e06f355c2d26e1db6e748610482c57e29b819cbb51c",
+      "edits_since_import": [
+        "working precision replaced by CAP_PREC",
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "program part of the former single file, split in the 2026-10-13 restructure"
+      ]
+    },
+    "convexity/local_t1.c": {
+      "origin": "written in October 2026 for this package or its immediate predecessor",
+      "imported_from": "archive/convexity/src/root_local_t1.c (authors' working repository)",
+      "sha256_at_import": "5a40b75c14525e53fc455ad70f091c2f705d6e740ffb6701d290f3e916af1d60",
+      "edits_since_import": [
+        "working precision replaced by CAP_PREC",
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure and renamed"
+      ]
+    },
+    "convexity/local_t2.c": {
+      "origin": "written in October 2026 for this package or its immediate predecessor",
+      "imported_from": "archive/convexity/src/local_t2.c (authors' working repository)",
+      "sha256_at_import": "a2465628384517ff69259f9f5bdf48142eba490487723058d6ebd77806319170",
+      "edits_since_import": [
+        "working precision replaced by CAP_PREC",
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)"
+      ]
+    },
+    "convexity/operators.c": {
+      "origin": "written in October 2026 for this package or its immediate predecessor",
+      "imported_from": "archive/convexity/src/derivative_operators.c (authors' working repository)",
+      "sha256_at_import": "0ebd9cebeb6d49641c8d54256c5f5773041bcc6e1f78771ae405acdcc3e54b7b",
+      "edits_since_import": [
+        "working precision replaced by CAP_PREC",
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure and renamed"
+      ]
+    },
+    "core/ball.c": {
+      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
+      "edits_since_import": [
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
+      ]
+    },
+    "core/ball.h": {
+      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
+      "edits_since_import": [
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
+      ]
+    },
     "core/basic_functions.c": {
       "origin": "the authors' original C/Arb implementation of the existence part (2023-2024), maintained in 2026",
       "imported_from": "archive/existence/src/basic_functions.c (authors' working repository)",
@@ -19,6 +123,15 @@
         "working precision replaced by CAP_PREC",
         "routines that no program calls removed",
         "working notes translated into documentation, headers added"
+      ]
+    },
+    "core/clausen_cache.c": {
+      "origin": "written in October 2026 for this package or its immediate predecessor",
+      "imported_from": "archive/existence/src/clausen_cache.c (authors' working repository)",
+      "sha256_at_import": "1eea2122a41df5e4a7e31b934059ea3ab123fb4a7c73b6c59008b50320f4edd5",
+      "edits_since_import": [
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)"
       ]
     },
     "core/complex_functions.c": {
@@ -61,16 +174,7 @@
         "working notes translated into documentation, headers added"
       ]
     },
-    "core/clausen_cache.c": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "archive/existence/src/clausen_cache.c (authors' working repository)",
-      "sha256_at_import": "1eea2122a41df5e4a7e31b934059ea3ab123fb4a7c73b6c59008b50320f4edd5",
-      "edits_since_import": [
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "existence/verify.c": {
+    "existence/defect.c": {
       "origin": "written in October 2026 for this package or its immediate predecessor",
       "imported_from": "archive/existence/src/verify.c (authors' working repository)",
       "sha256_at_import": "ad408ad98577ab6752fe8df881dffc3cb4a6df4c1c13898329558e38a6946225",
@@ -78,10 +182,11 @@
         "working precision replaced by CAP_PREC",
         "printed-decimal assertions added",
         "headers added",
-        "reformatted with clang-format (semantics unchanged)"
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure and renamed"
       ]
     },
-    "existence/norm.c": {
+    "existence/norm_t0.c": {
       "origin": "written in October 2026 for this package or its immediate predecessor",
       "imported_from": "archive/existence/src/norm.c (authors' working repository)",
       "sha256_at_import": "3110e2c8022240592a1cfd46444df6b4dcd7109e1ddca6474ed72c7399d3706a",
@@ -89,7 +194,8 @@
         "working precision replaced by CAP_PREC",
         "printed-decimal assertions added",
         "headers added",
-        "reformatted with clang-format (semantics unchanged)"
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure and renamed"
       ]
     },
     "existence/scalars.c": {
@@ -104,6 +210,17 @@
         "the radius of the nu enclosure passed explicitly"
       ]
     },
+    "existence/supplemental_scalars.c": {
+      "origin": "written in October 2026 for this package or its immediate predecessor",
+      "imported_from": "review/computational-exposition-2026-10-10/supplemental_scalars.c (authors' working repository)",
+      "sha256_at_import": "9b20754f01e362b11276b2ac7af51c7fcb72111938c78896e753fb1a6efd9930",
+      "edits_since_import": [
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
+      ]
+    },
     "existence/test_evaluators.c": {
       "origin": "written in October 2026 for this package or its immediate predecessor",
       "imported_from": "archive/existence/src/test_evaluators.c (authors' working repository)",
@@ -115,195 +232,92 @@
         "reformatted with clang-format (semantics unchanged)"
       ]
     },
-    "convexity/derivative_bounds.c": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "archive/convexity/src/derivative_bounds.c (authors' working repository)",
-      "sha256_at_import": "63d617ba71cc5358e3507129d62b96d504b2f9c78a3f78604d206312fe9fbfc5",
+    "precision.h": {
+      "origin": "written in October 2026 for this package"
+    },
+    "run.py": {
+      "origin": "written in October 2026 for this package"
+    },
+    "uniqueness/comparison.c": {
+      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
       "edits_since_import": [
-        "working precision replaced by CAP_PREC",
         "printed-decimal assertions added",
         "headers added",
-        "reformatted with clang-format (semantics unchanged)"
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure and renamed"
       ]
     },
-    "convexity/derivative_bounds.h": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "archive/convexity/src/derivative_bounds.h (authors' working repository)",
-      "sha256_at_import": "4defa523cac767ab7ba97c714da4a342a00d5ca5e7d62712ee457ac1e36b1fca",
+    "uniqueness/kernel.c": {
+      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
       "edits_since_import": [
-        "working precision replaced by CAP_PREC",
         "printed-decimal assertions added",
         "headers added",
-        "reformatted with clang-format (semantics unchanged)"
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
       ]
     },
-    "convexity/derivative_cusp.c": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "archive/convexity/src/derivative_cusp.c (authors' working repository)",
-      "sha256_at_import": "f123a0fa0f6cf1c5cd7e1e06f355c2d26e1db6e748610482c57e29b819cbb51c",
+    "uniqueness/kernel.h": {
+      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
       "edits_since_import": [
-        "working precision replaced by CAP_PREC",
         "printed-decimal assertions added",
         "headers added",
-        "reformatted with clang-format (semantics unchanged)"
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
       ]
     },
-    "convexity/derivative_operators.c": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "archive/convexity/src/derivative_operators.c (authors' working repository)",
-      "sha256_at_import": "0ebd9cebeb6d49641c8d54256c5f5773041bcc6e1f78771ae405acdcc3e54b7b",
-      "edits_since_import": [
-        "working precision replaced by CAP_PREC",
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "convexity/derivative_profile.c": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "archive/convexity/src/derivative_profile.c (authors' working repository)",
-      "sha256_at_import": "27bdf3598e9099a6dcb65aa6c823ac430d078b24d2ba900abc03109081e1b5be",
-      "edits_since_import": [
-        "working precision replaced by CAP_PREC",
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "convexity/local_t2.c": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "archive/convexity/src/local_t2.c (authors' working repository)",
-      "sha256_at_import": "a2465628384517ff69259f9f5bdf48142eba490487723058d6ebd77806319170",
-      "edits_since_import": [
-        "working precision replaced by CAP_PREC",
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "convexity/root_local_t1.c": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "archive/convexity/src/root_local_t1.c (authors' working repository)",
-      "sha256_at_import": "5a40b75c14525e53fc455ad70f091c2f705d6e740ffb6701d290f3e916af1d60",
-      "edits_since_import": [
-        "working precision replaced by CAP_PREC",
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/matrix_driver.c": {
+    "uniqueness/matrix.c": {
       "origin": "written in October 2026 for this package or its immediate predecessor",
       "imported_from": "archive/uniqueness/src/matrix_driver.c (authors' working repository)",
       "sha256_at_import": "f847651787d734919356443720f10467cf682bfe0c53e4eb9540766e6c91a862",
       "edits_since_import": [
         "working precision replaced by CAP_PREC",
         "headers added",
-        "reformatted with clang-format (semantics unchanged)"
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure and renamed"
       ]
     },
-    "src/refine.c": {
+    "uniqueness/refine.c": {
       "origin": "written in October 2026 for this package or its immediate predecessor",
       "imported_from": "archive/uniqueness/src/refine.c (authors' working repository)",
       "sha256_at_import": "552d058de26567860be145267803f8ef4bc52e8a5b049bcb68d38f1fb9491089",
       "edits_since_import": [
         "working precision replaced by CAP_PREC",
         "headers added",
-        "reformatted with clang-format (semantics unchanged)"
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
       ]
     },
-    "src/test_refine.c": {
+    "uniqueness/refine.h": {
+      "origin": "written in October 2026 for this package (2026-10-13 restructure)"
+    },
+    "uniqueness/sign.c": {
+      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
+      "edits_since_import": [
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
+      ]
+    },
+    "uniqueness/test_kernel.c": {
+      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
+      "edits_since_import": [
+        "printed-decimal assertions added",
+        "headers added",
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
+      ]
+    },
+    "uniqueness/test_refine.c": {
       "origin": "written in October 2026 for this package or its immediate predecessor",
       "imported_from": "archive/uniqueness/src/test_refine.c (authors' working repository)",
       "sha256_at_import": "fbcf2ea17e127be15fe211accd8b2725420c5166e7ddda9a9a8a952c6e7fe4cf",
       "edits_since_import": [
         "working precision replaced by CAP_PREC",
         "headers added",
-        "reformatted with clang-format (semantics unchanged)"
+        "reformatted with clang-format (semantics unchanged)",
+        "moved to its part directory in the 2026-10-13 restructure"
       ]
-    },
-    "src/supplemental_scalars.c": {
-      "origin": "written in October 2026 for this package or its immediate predecessor",
-      "imported_from": "review/computational-exposition-2026-10-10/supplemental_scalars.c (authors' working repository)",
-      "sha256_at_import": "9b20754f01e362b11276b2ac7af51c7fcb72111938c78896e753fb1a6efd9930",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/ball.c": {
-      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/ball.h": {
-      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/kernel.c": {
-      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/kernel.h": {
-      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/sign.c": {
-      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/uniqueness.c": {
-      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/closure.c": {
-      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "src/test_kernel.c": {
-      "origin": "written in October 2026 for this package as a C/Arb port of the authors' earlier Python implementation",
-      "edits_since_import": [
-        "printed-decimal assertions added",
-        "headers added",
-        "reformatted with clang-format (semantics unchanged)"
-      ]
-    },
-    "run.py": {
-      "origin": "written in October 2026 for this package"
-    },
-    "Makefile": {
-      "origin": "written in October 2026 for this package"
-    },
-    "precision.h": {
-      "origin": "written in October 2026 for this package"
     }
   }
 }

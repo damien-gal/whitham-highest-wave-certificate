@@ -1,4 +1,4 @@
-/* norm.c: the operator norm of T_0 on the compact cells (stage T0).
+/* norm_t0.c: the operator norm of T_0 on the compact cells (stage T0).
  *
  * Evaluates the row norm of T_0 through its primitive on a recursive cover
  * of [eps, pi] and certifies the bound 0.998 of the proposition on T_0 cell

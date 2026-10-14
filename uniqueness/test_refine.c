@@ -2,7 +2,8 @@
  * against its literal two-variable optimization on small integer domains
  * (stage refinement_tests).
  */
-#include "refine.c"
+#include "refine.h"
+#include <stdlib.h>
 #include <stdio.h>
 static unsigned state = 1234567;
 static unsigned rnd(void) {
@@ -22,16 +23,16 @@ int main(void) {
     }
     Row r = {0};
     r.difference = 1;
-    r.a = make(a, v, 8);
-    r.b = make(b, v, 8);
-    r.m = make(m, v, 8);
-    r.pu = minp(&r, 0, 48);
-    r.tu = mint(&r, 0, 64);
+    r.a = refine_make(a, v, 8);
+    r.b = refine_make(b, v, 8);
+    r.m = refine_make(m, v, 8);
+    r.pu = refine_minp(&r, 0, 48);
+    r.tu = refine_mint(&r, 0, 64);
     for (V t = 0; t <= 64; t++) {
       I best = 0;
       int first = 1;
       for (V p = 0; p <= 48 && p <= t; p++) {
-        I val = square(p);
+        I val = refine_square(p);
         for (int j = 0; j < 8; j++)
           val -= (I)b[j] * (v[j] < p ? v[j] : p);
         for (int j = 0; j < 8; j++)
@@ -41,24 +42,24 @@ int main(void) {
           best = val;
         }
       }
-      if (inner(&r, t) != best) {
+      if (refine_inner(&r, t) != best) {
         fprintf(stderr, "FAIL inner minimization\n");
         return 1;
       }
     }
     for (V q = 0; q <= 64; q++) {
-      I best = inner(&r, 0);
+      I best = refine_inner(&r, 0);
       for (V t = 1; t <= q; t++)
-        if (inner(&r, t) < best)
-          best = inner(&r, t);
-      if (inner(&r, q < r.tu ? q : r.tu) != best) {
+        if (refine_inner(&r, t) < best)
+          best = refine_inner(&r, t);
+      if (refine_inner(&r, q < r.tu ? q : r.tu) != best) {
         fprintf(stderr, "FAIL clipped minimizer\n");
         return 1;
       }
     }
-    clear(&r.a);
-    clear(&r.b);
-    clear(&r.m);
+    refine_clear(&r.a);
+    refine_clear(&r.b);
+    refine_clear(&r.m);
   }
   puts("PASS 300 exhaustive discrete-convex problems, all clipped domains");
   return 0;

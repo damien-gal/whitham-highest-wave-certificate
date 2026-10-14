@@ -1,4 +1,4 @@
-/* derivative_bounds.c: derivative and curvature bounds on the compact
+/* derivative_compact.c: derivative and curvature bounds on the compact
  * interval (stage derivative_compact).
  *
  * Covers [eps, pi] (eps = 0.05) recursively with mean-value cell enclosures
@@ -9,7 +9,7 @@
  * replaced by an impossible value and the program must return UNRESOLVED;
  * --sample prints diagnostics only.
  */
-#include "derivative_bounds.h"
+#include "complex_functions.h"
 #include <stdlib.h>
 #include <time.h>
 #define P CAP_PREC

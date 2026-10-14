@@ -1,6 +1,6 @@
-/* verify.c: the bound on the defect F_0 (stage existence).
+/* defect.c: the bound on the defect F_0 (stage existence).
  *
- * Usage: verify <eps> compact [--reject-test]. On (0, eps] (eps = 0.05) the
+ * Usage: defect <eps> compact [--reject-test]. On (0, eps] (eps = 0.05) the
  * defect is bounded from the cusp expansions of u_0 and L u_0 with the
  * remainder bounds of constant_functions.c; on [eps, pi] a recursive cover
  * with mean-value cell enclosures certifies |F_0| <= 1e-7 and prints the
