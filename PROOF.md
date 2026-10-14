@@ -63,7 +63,11 @@ the kernel zero are the exact decimals of `inputs/kernel-sign.json`; `run.py`
 checks that `uniqueness/kernel.c` declares the same coefficients and, when the paper
 source is present next to the package, that the lemma in Appendix C states
 the same polynomials and targets. The refinement grid is the exact binary64
-file `inputs/grid720.bin`, whose last node is the double nearest to $\pi$.
+file `inputs/grid720.bin`: the 720 double-precision values of the geometric
+progression from $10^{-3}$ to $\pi$ as `numpy.geomspace(0.001, pi, 720)` produces
+them (the authors' exploratory uniqueness script; reproduced byte for byte),
+interpreted as exact dyadic numbers. Its last entry is the double nearest to
+$\pi$, which the programs replace by exact $\pi$.
 
 ## Constructions
 

@@ -2,10 +2,8 @@
 
 This directory contains the code for the computer-assisted parts of the paper
 *Uniqueness, convexity and sharp asymptotics for Whitham's highest wave*. It is
-distributed with the paper as arXiv ancillary files and is also kept at
-<https://github.com/damien-gal/whitham-highest-wave-certificate> (private until
-publication); in the authors' working repository it is the directory
-`certificate/`.
+distributed with the paper as arXiv ancillary files; in the authors' working
+repository it is the directory `certificate/`, beside the paper source.
 
 ## Authors
 
@@ -63,7 +61,9 @@ Another installation prefix is passed as `FLINT_PREFIX=<prefix> make verify`.
 - `inputs/` holds the exact inputs: the approximation coefficients
   (`approximation.json`), the kernel-sign polynomials and targets
   (`kernel-sign.json`), the closure constants (`closure.json`) and the 720-node
-  refinement grid (`grid720.bin`, binary64).
+  refinement grid (`grid720.bin`, binary64: a geometric progression from
+  $10^{-3}$ to $\pi$ in double precision). Each file states where it comes from;
+  `import-manifest.json` records the provenance of the grid.
 - `PROOF.md` maps every stage to the statements of the paper and describes
   the constructions; `import-manifest.json` records the provenance of every
   source file.
@@ -144,7 +144,7 @@ This code is released under the MIT License; see [`LICENSE`](LICENSE).
 
 Every FLINT ball call uses the 128-bit working precision of `precision.h`. The
 exact lattice refinement keeps signed 128-bit integers with coefficient scale
-2^-42 and profile scale 2^-32; the stored binary64 grid and the outward matrix
+`2^-42` and profile scale `2^-32`; the stored binary64 grid and the outward matrix
 endpoints are exact dyadic inputs, not floating-point acceptance tests. The
 input files require little-endian IEEE binary64, which the uniqueness verifier
 checks. A successful run records the compiler, the hashes of the sources,

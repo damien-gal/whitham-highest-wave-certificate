@@ -1,5 +1,5 @@
 {
-  "description": "Provenance of the sources of the whitham-highest-wave package. 'origin' states where a file comes from; 'sha256_at_import' is the hash of the file when it entered this package from the authors' working repository, before the listed edits. The code written in 2026 was produced with the assistance of large language models, as stated in the paper, and checked by the authors.",
+  "description": "Provenance of the sources and inputs of the whitham-highest-wave package. 'origin' states where a file comes from; 'sha256_at_import' is the hash of the file when it entered this package from the authors' working repository, before the listed edits. The code written in 2026 was produced with the assistance of large language models, as stated in the paper, and checked by the authors.",
   "files": {
     "Makefile": {
       "origin": "written in October 2026 for this package"
@@ -231,6 +231,22 @@
         "headers added",
         "reformatted with clang-format (semantics unchanged)"
       ]
+    },
+    "inputs/approximation.json": {
+      "origin": "the exponents and coefficients of the approximate solution u_0 of equation (u0), as assigned in the authors' original existence implementation (2023-2024); written in October 2026 for this package",
+      "imported_from": "legacy basic_functions.c (authors' working repository), hash recorded in the file itself"
+    },
+    "inputs/closure.json": {
+      "origin": "the scalar targets of the fixed-point argument fixed in Sections 5-7 of the paper; written in October 2026 for this package from the authors' convexity component (see the source field of the file)"
+    },
+    "inputs/grid720.bin": {
+      "origin": "the 720 double-precision values of the geometric progression from 10^-3 to pi, generated as numpy.geomspace(0.001, pi, 720) by the authors' exploratory uniqueness script in October 2026 (reproduced byte for byte with numpy 1.24.2); the programs interpret the entries as exact dyadic numbers and replace the last one, the double nearest to pi, by exact pi",
+      "sha256_at_import": "b0d0c1783ca0700ff2cf65e520d2e59fe7513718103e00671181113bbe6f26d2"
+    },
+    "inputs/kernel-sign.json": {
+      "origin": "the root polynomials of the authors' original uniqueness implementation (2023-2024) and the seven targets of the lemma on the kernel zero in Appendix C; written in October 2026 for this package",
+      "imported_from": "legacy complex_functions_uniqueness.c (authors' working repository)",
+      "sha256_at_import": "a5e9229b710cff8134111a956d4eb41d18839a9ae1bf72eab63f39bfff899d44"
     },
     "precision.h": {
       "origin": "written in October 2026 for this package"

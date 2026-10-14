@@ -1,4 +1,6 @@
 {
+  "source": "coeffs: the thirteen coefficients of x, x^2, ..., x^13 of the polynomials y*_-(x) and y*_+(x) from the authors' original uniqueness implementation (complex_functions_uniqueness.c), reproduced verbatim in uniqueness/kernel.c and printed in Appendix C of the paper; targets: the seven constants of the lemma on the kernel zero in Appendix C. run.py checks the coefficients against the C file and, when the paper source is present, the coefficients and the targets against the appendix.",
+  "original_source_sha256": "a5e9229b710cff8134111a956d4eb41d18839a9ae1bf72eab63f39bfff899d44",
   "coeffs": {
     "minus": [
       "0.652894520981",
